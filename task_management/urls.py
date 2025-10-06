@@ -1,12 +1,13 @@
-from django.urls import path
-from .views import (
-    ProjectCreateAPIView,
-    ProjectUpdateAPIView,
-    ProjectDestroyAPIView,
-)
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import *
+
+
 app_name='task'
-urlpatterns = [
-    path('projects/create/', ProjectCreateAPIView.as_view(), name='project-create'),
-    path('projects/<int:pk>/update/', ProjectUpdateAPIView.as_view(), name='project-update'),
-    path('projects/<int:pk>/delete/', ProjectDestroyAPIView.as_view(), name='project-delete'),
-]
+
+router = DefaultRouter()
+router.register(r'projects', ProjectViewSet, basename='project')
+urlpatterns = router.urls
+urlpatterns += [
+    path('tasks/', TaskAPIView.as_view(), name='task-list-create'),
+    path('tasks/<int:pk>/', TaskAPIView.as_view(), name='task-detail'),]
