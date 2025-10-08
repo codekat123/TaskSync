@@ -1,18 +1,5 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        
-        # Add custom fields
-        token['email'] = user.email
-        token['username'] = user.username
-        token['role'] = getattr(user, 'role', 'user')  # Example
-        
-        return token
 
 class SignUpSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -20,7 +7,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email','first_name','password1', 'password2',]
+        fields = ['email','first_name','password1', 'password2','role']
 
     def validate(self, data):
         if data['password1'] != data['password2']:

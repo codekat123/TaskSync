@@ -29,21 +29,21 @@ class CustomUserManager(BaseUserManager):
      
 
 class User(AbstractUser):
-     ROLE_CHOICES = [
-          ('Manager','Manager'),
-          ('teamleader','teamleader'),
-          ('Employee','Employee'),
-     ]
+
+     class Roles(models.TextChoices):
+        MANAGER = "Manager", "Manager"
+        TEAM_LEADER = "TeamLeader", "Team Leader"
+        EMPLOYEE = "Employee", "Employee"
      username = None
      email = models.EmailField(unique=True,max_length=100)
-     role = models.CharField(max_length=40,choices=ROLE_CHOICES)
+     role = models.CharField(max_length=40,choices=Roles.choices, default=Roles.EMPLOYEE)
 
      USERNAME_FIELD = 'email'
      REQUIRED_FIELDS = []
      objects = CustomUserManager()
      
      def __str__(self):
-          return f"E-mail => {self.email}"
+          return self.email
      
      def get_full_name(self):
           return self.first_name +" "+self.last_name

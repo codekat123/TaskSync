@@ -1,13 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import *
+from .views import ManagerProjectViewSet, TaskViewSet
 
-
-app_name='task'
+app_name = 'task'
 
 router = DefaultRouter()
-router.register(r'projects', ProjectViewSet, basename='project')
-urlpatterns = router.urls
-urlpatterns += [
-    path('tasks/', TaskAPIView.as_view(), name='task-list-create'),
-    path('tasks/<int:pk>/', TaskAPIView.as_view(), name='task-detail'),]
+router.register(r'manager/projects', ManagerProjectViewSet, basename='manager-project')
+router.register(r'tasks', TaskViewSet, basename='task')
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
