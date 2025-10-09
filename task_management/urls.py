@@ -1,13 +1,19 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import ManagerProjectViewSet, TaskViewSet
+from django.urls import path
+from .views import (
+    ManagerProjectListCreateView,
+    ManagerProjectDetailView,
+    TaskListCreateView,
+    TaskDetailView,
+)
 
 app_name = 'task'
 
-router = DefaultRouter()
-router.register(r'manager/projects', ManagerProjectViewSet, basename='manager-project')
-router.register(r'tasks', TaskViewSet, basename='task')
-
 urlpatterns = [
-    path('', include(router.urls)),
+    # Manager Projects
+    path('manager/projects/', ManagerProjectListCreateView.as_view(), name='manager-project-list-create'),
+    path('manager/projects/<int:pk>/', ManagerProjectDetailView.as_view(), name='manager-project-detail'),
+
+    # Tasks
+    path('tasks/', TaskListCreateView.as_view(), name='task-list-create'),
+    path('tasks/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
 ]

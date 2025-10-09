@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task , Project
+from .models import Task , Project,Notification
 
 class TaskSerializer(serializers.ModelSerializer):
      class Meta:
@@ -16,7 +16,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id', 'name', 'description', 'due_date', 'responsible',
+            'id', 'name', 'description', 'due_date', 'teamleader',
             'completed', 'in_progress', 'pending', 'cancelled'
         ]
 
@@ -34,3 +34,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def remaining_days(self,obj):
         return obj.remaining_days()
+    
+
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+     class Meta:
+          model = Notification
+          fields = '__all__'

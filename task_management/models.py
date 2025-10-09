@@ -11,7 +11,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     teamleader = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name='teamleader')
-    manager = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name='manager')
+    manager = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     def completed(self):
         total_tasks = Task.objects.filter(project=self).count()
@@ -67,3 +67,18 @@ class Task(models.Model):
 
      def __str__(self):
          return f"{self.title} ({self.status})"
+
+
+
+class Log(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    action = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+     receiver = models.ForeignKey(User,on_delete=models.CASCADE,related_name="notifications")
+     message = models.TextField()
+     is_read = models.BooleanField(default=False)
+     created_at = models.DateTimeField(auto_now_add=True)
